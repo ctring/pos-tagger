@@ -7,7 +7,7 @@ _DATA_PATH = 'data/train.txt'
 _TAGSET_PATH = 'data/tags.txt'
 
 class TestText(unittest.TestCase):
-    def setUp(self):
+    def setUpClass(self):
         self.data = Text(_DATA_PATH)
 
     def test_count_from_only_transition(self):
@@ -27,7 +27,7 @@ class TestText(unittest.TestCase):
 
 
 class TestTagSet(unittest.TestCase):
-    def setUp(self):
+    def setUpClass(self):
         self.tagset = TagSet(_TAGSET_PATH)
 
     def test_description(self):
