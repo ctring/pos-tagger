@@ -34,4 +34,5 @@ WDT; Wh-determiner
 WP; Wh-pronoun
 WP$; Possessive wh-pronoun (prolog version WP-S)
 WRB; Wh-adverb
-
+.; Period
+,; Comma

@@ -1,0 +1,8 @@
+DT;x
+VBZ;x
+JJ;x
+PRP;x
+RB;x
+VB;x
+TO;x
+NN;x

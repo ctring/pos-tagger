@@ -18,9 +18,22 @@ class Text:
         if from_tag is None:
             freq = tags[1:].value_counts()
             return freq[to_tag] if to_tag in freq else 0
-        pairs = pd.Series(zip(tags[:tags.size-1], tags[1:]))
+        pairs = pd.Series(list(zip(tags[:tags.size-1], tags[1:])))
         freq = pairs.value_counts()
-        return freq[(from_tag, to_tag)]
+        return freq.get((from_tag, to_tag), 0)
+
+    def count_emission(self, from_tag, to_word=None):
+        filtered = self._data[self._data['tag'] == from_tag]
+        if to_word:
+            return filtered[filtered['word'] == to_word].shape[0]
+        word_prob = filtered['word'].value_counts(normalize=True)
+        return word_prob.to_dict()
+
+    def get_words(self):
+        return self._data['word'].tolist()
+
+    def count_tag(self, tag):
+        return self._data['tag'].value_counts().get(tag, 0)
 
 
 class TagSet():
@@ -39,3 +52,6 @@ class TagSet():
     def describe(self, tag):
         filtered = self._tags.loc[self._tags['tag'] == tag]
         return filtered['description'].values
+
+    def get_tags(self):
+        return self._tags['tag'].tolist()

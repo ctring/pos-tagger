@@ -32,7 +32,7 @@ class HMM():
         transition_probs = np.array(transition_probs)
         assert transition_probs.shape == (self._N, self._N), 'Shape must be {}'.format((self._N, self._N))
         row_sum = np.sum(transition_probs, axis=1)
-        assert np.all(np.isclose(row_sum, 1.0)), 'Sum of each row must be 1.0'
+        assert np.all(row_sum <= 1.0), 'Sum of each row must be smaller than 1.0'
         assert np.all(0 <= transition_probs) and np.all(transition_probs <= 1.0), 'All values must lie between 0.0 and 1.0'
         self._transition = np.copy(transition_probs)
 

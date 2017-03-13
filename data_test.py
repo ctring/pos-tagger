@@ -25,6 +25,14 @@ class TestText(unittest.TestCase):
         count = self.data.count_transition(from_tag='NN', to_tag='VB')
         self.assertEqual(count, 43)
 
+    def test_count_emission(self):
+        count = self.data.count_emission(from_tag='VB', to_word='defraud')
+        self.assertEqual(count, 4)
+
+    def test_count_all_emission(self):
+        count_dict = self.data.count_emission(from_tag='CD')
+        self.assertEqual(type(count_dict), dict)
+
 
 class TestTagSet(unittest.TestCase):
     def setUp(self):
