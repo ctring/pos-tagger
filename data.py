@@ -30,6 +30,12 @@ class TagSet():
         self._tags.columns = ['tag', 'description']
         self._tags['description'] = self._tags['description'].map(str.strip)
 
+    def __len__(self):
+        return len(self._tags)
+
+    def __contains__(self, tag):
+        return tag in self._tags['tag'].values
+
     def describe(self, tag):
         filtered = self._tags.loc[self._tags['tag'] == tag]
         return filtered['description'].values
