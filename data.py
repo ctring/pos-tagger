@@ -37,19 +37,19 @@ class Text:
         probs = self.calculate_transition_matrix()
         return probs[tag_index[SPACE_TAG]]
 
-    # def count_transition(self, from_tag=None, to_tag=None):
-    #     if from_tag is None and to_tag is None:
-    #         return 0
-    #     tags = self._data['tag']
-    #     if to_tag is None:
-    #         freq = tags[:tags.size-1].value_counts()
-    #         return freq[from_tag] if from_tag in freq else 0
-    #     if from_tag is None:
-    #         freq = tags[1:].value_counts()
-    #         return freq[to_tag] if to_tag in freq else 0
-    #     pairs = pd.Series(list(zip(tags[:tags.size-1], tags[1:])))
-    #     freq = pairs.value_counts()
-    #     return freq.get((from_tag, to_tag), 0)
+    def count_transition(self, from_tag=None, to_tag=None):
+        if from_tag is None and to_tag is None:
+            return 0
+        tags = self._data['tag']
+        if to_tag is None:
+            freq = tags[:tags.size-1].value_counts()
+            return freq[from_tag] if from_tag in freq else 0
+        if from_tag is None:
+            freq = tags[1:].value_counts()
+            return freq[to_tag] if to_tag in freq else 0
+        pairs = pd.Series(list(zip(tags[:tags.size-1], tags[1:])))
+        freq = pairs.value_counts()
+        return freq.get((from_tag, to_tag), 0)
 
     def count_emission(self, from_tag, to_word=None):
         filtered = self._data[self._data['tag'] == from_tag]
@@ -66,23 +66,3 @@ class Text:
             self._cached_tagset = self._data['tag'].unique().tolist()
             self._cached_tag_index = {tag:i for i, tag in enumerate(self._cached_tagset)}
         return self._cached_tagset, self._cached_tag_index
-
-# class TagSet():
-
-#     def __init__(self, path):
-#         self._tags = pd.read_csv(path, sep=';', header=None)
-#         self._tags.columns = ['tag', 'description']
-#         self._tags['description'] = self._tags['description'].map(str.strip)
-
-#     def __len__(self):
-#         return len(self._tags)
-
-#     def __contains__(self, tag):
-#         return tag in self._tags['tag'].values
-
-#     def describe(self, tag):
-#         filtered = self._tags.loc[self._tags['tag'] == tag]
-#         return filtered['description'].values
-
-#     def get_tags(self):
-#         return self._tags['tag'].tolist()
