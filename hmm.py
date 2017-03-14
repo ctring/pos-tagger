@@ -3,10 +3,13 @@ import numpy as np
 
 class HMM():
 
-    def __init__(self, states):
+    def __init__(self, states, state_index=None):
         self._states = list(states)
         self._N = len(states)
-        self._state_index = {s:i for i, s in enumerate(self._states)}
+        if not state_index:
+            self._state_index = {s:i for i, s in enumerate(self._states)}
+        else:
+            self._state_index = state_index
         self._transition = np.zeros((self._N, self._N))
         self._emission = {s:{} for s in self._states}
         self._initial = np.zeros(self._N)
@@ -19,7 +22,7 @@ class HMM():
     def set_initial(self, init):
         init = np.array(init)
         assert init.shape == (self._N,), 'Shape must be {}'.format((self._N,))
-        assert np.isclose(np.sum(init), 1.0), 'Sum of all probabilities must be 1.0'
+        assert np.sum(init) <= 1.0, 'Sum of all probabilities must be smaller than 1.0'
         self._initial = np.copy(init)
 
     def set_transition(self, from_state, to_state, prob):
@@ -32,8 +35,8 @@ class HMM():
         transition_probs = np.array(transition_probs)
         assert transition_probs.shape == (self._N, self._N), 'Shape must be {}'.format((self._N, self._N))
         row_sum = np.sum(transition_probs, axis=1)
-        assert np.all(row_sum <= 1.0), 'Sum of each row must be smaller than 1.0'
         assert np.all(0 <= transition_probs) and np.all(transition_probs <= 1.0), 'All values must lie between 0.0 and 1.0'
+
         self._transition = np.copy(transition_probs)
 
     def set_emission(self, state, obs):
